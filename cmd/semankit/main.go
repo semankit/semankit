@@ -25,14 +25,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	defaults, err := rc.New(nil)
+	rules, err := rc.New(nil)
 	if err != nil {
 		log.Error(err)
 		os.Exit(1)
 	}
 
 	currentBranch := git.CurrentBranch()
-	if branchCfn := defaults.FindConfOfBranch(currentBranch); branchCfn == nil {
+	if branchCfn := rules.FindConfOfBranch(currentBranch); branchCfn == nil {
 		log.Info(fmt.Sprintf("no conf found for %s, skipping current execution", currentBranch))
 		os.Exit(0)
 	} else {
@@ -60,6 +60,12 @@ func main() {
 			os.Exit(0)
 		}
 
+		if branchCfn.Release.HasSuffix() {
+			branchCfn.Release.AppendSuffix(&nextVersion)
+		}
+
 		fmt.Print(nextVersion)
 	}
+
+	os.Exit(0)
 }
