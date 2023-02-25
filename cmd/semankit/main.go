@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	gitClient "github.com/bitbreakr/semankit/internal/git"
-	"github.com/bitbreakr/semankit/internal/rc"
-	"github.com/bitbreakr/semankit/internal/versioning"
-	"github.com/bitbreakr/semankit/internal/versioning/strategy"
 	"github.com/charmbracelet/log"
+	gitClient "github.com/semankit/semankit/internal/git"
+	"github.com/semankit/semankit/internal/rc"
+	"github.com/semankit/semankit/internal/versioning"
+	"github.com/semankit/semankit/internal/versioning/strategy"
 	"os"
 )
 

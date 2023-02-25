@@ -1,4 +1,4 @@
-module github.com/bitbreakr/semankit
+module github.com/semankit/semankit
 
 go 1.19
 

@@ -1,7 +1,7 @@
 package version
 
 import (
-	"github.com/bitbreakr/semankit/pkg/git"
+	"github.com/semankit/semankit/pkg/git"
 )
 
 type Strategy interface {

@@ -1,10 +1,10 @@
 package versioning
 
 import (
-	gitClient "github.com/bitbreakr/semankit/internal/git"
-	"github.com/bitbreakr/semankit/pkg/git"
-	"github.com/bitbreakr/semankit/pkg/version"
 	"github.com/charmbracelet/log"
+	gitClient "github.com/semankit/semankit/internal/git"
+	"github.com/semankit/semankit/pkg/git"
+	"github.com/semankit/semankit/pkg/version"
 	"strings"
 )
 

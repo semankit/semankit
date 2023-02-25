@@ -3,7 +3,7 @@ package strategy
 import (
 	"errors"
 	"fmt"
-	"github.com/bitbreakr/semankit/pkg/git"
+	"github.com/semankit/semankit/pkg/git"
 	"strconv"
 	"strings"
 	"unicode"
