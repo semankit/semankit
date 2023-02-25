@@ -5,8 +5,8 @@ import (
 )
 
 type File struct {
-	Branch     string `yaml:"-"`
-	Prerelease bool   `yaml:"prerelease"`
+	Branch  string  `yaml:"-"`
+	Release Release `yaml:"release,omitempty"`
 }
 
 func NewFile(content []byte) (File, error) {
