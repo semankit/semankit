@@ -32,6 +32,8 @@ func (receiver *Bump) calculateWeight(commit git.Commit, strategy version.Strate
 				strategy.UpdateVersion(git.Minor)
 			}
 		}
+
+		receiver.IsDirty = true
 	}
 
 	if strings.HasPrefix(commit.Message, "fix:") ||
@@ -45,6 +47,8 @@ func (receiver *Bump) calculateWeight(commit git.Commit, strategy version.Strate
 				strategy.UpdateVersion(git.Patch)
 			}
 		}
+
+		receiver.IsDirty = true
 	}
 }
 
