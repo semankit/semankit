@@ -53,6 +53,18 @@ func (s *Semantic) SetCurrentVersion(tag string) error {
 	return nil
 }
 
+func (s *Semantic) hasReachCap(commitType git.CommitType) bool {
+	capLimit := 255
+	switch commitType {
+	case git.Minor:
+		return s.minor < capLimit
+	case git.Patch:
+		return s.patch < capLimit
+	}
+
+	return false
+}
+
 func (s *Semantic) UpdateVersion(commitType git.CommitType) {
 	switch commitType {
 	case git.Major:
@@ -61,11 +73,21 @@ func (s *Semantic) UpdateVersion(commitType git.CommitType) {
 		}
 	case git.Minor:
 		{
-			s.minor++
+			if s.hasReachCap(git.Minor) {
+				s.minor++
+			} else {
+				s.minor = 0
+				s.patch++
+			}
 		}
 	case git.Patch:
 		{
-			s.patch++
+			if s.hasReachCap(git.Patch) {
+				s.patch++
+			} else {
+				s.patch = 0
+				s.minor++
+			}
 		}
 	}
 }
