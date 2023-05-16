@@ -2,34 +2,33 @@ package versioning
 
 import (
 	"github.com/charmbracelet/log"
-	gitClient "github.com/semankit/semankit/internal/git"
-	"github.com/semankit/semankit/pkg/git"
+	"github.com/semankit/karmic"
+	commitType "github.com/semankit/semankit/pkg/commit"
 	"github.com/semankit/semankit/pkg/version"
 	"strings"
 )
 
 type Bump struct {
-	IsDirty    bool
-	repository gitClient.Git
+	IsDirty bool
 }
 
 func New() Bump {
 	return Bump{}
 }
 
-func (receiver *Bump) calculateWeight(commit git.Commit, strategy version.Strategy) {
+func (receiver *Bump) calculateWeight(commit karmic.Commit, strategy version.Strategy) {
 	commit.Message = strings.TrimLeft(commit.Message, " ")
 	commit.Message = strings.TrimRight(commit.Message, " ")
 
 	if strings.HasPrefix(commit.Message, "feat:") ||
 		strings.HasPrefix(commit.Message, "feat(") {
-		if is, err := receiver.repository.IsCommitBreakingChange(commit); err != nil {
+		if is, err := commit.IsBreakingChange(); err != nil {
 			log.Error(err)
 		} else {
 			if is {
-				strategy.UpdateVersion(git.Major)
+				strategy.UpdateVersion(commitType.Major)
 			} else {
-				strategy.UpdateVersion(git.Minor)
+				strategy.UpdateVersion(commitType.Minor)
 			}
 		}
 
@@ -38,13 +37,13 @@ func (receiver *Bump) calculateWeight(commit git.Commit, strategy version.Strate
 
 	if strings.HasPrefix(commit.Message, "fix:") ||
 		strings.HasPrefix(commit.Message, "fix(") {
-		if is, err := receiver.repository.IsCommitBreakingChange(commit); err != nil {
+		if is, err := commit.IsBreakingChange(); err != nil {
 			log.Error(err)
 		} else {
 			if is {
-				strategy.UpdateVersion(git.Minor)
+				strategy.UpdateVersion(commitType.Minor)
 			} else {
-				strategy.UpdateVersion(git.Patch)
+				strategy.UpdateVersion(commitType.Patch)
 			}
 		}
 
@@ -53,12 +52,12 @@ func (receiver *Bump) calculateWeight(commit git.Commit, strategy version.Strate
 }
 
 func (receiver *Bump) Bump(
-	currentVersion *string,
-	commits []git.Commit,
+	currentVersion *karmic.Tag,
+	commits []karmic.Commit,
 	strategy version.Strategy,
 ) (next string, err error) {
 	if currentVersion != nil {
-		if currVerErr := strategy.SetCurrentVersion(*currentVersion); currVerErr != nil {
+		if currVerErr := strategy.SetCurrentVersion(currentVersion.String()); currVerErr != nil {
 			log.Error(currVerErr)
 			strategy.InitVersion()
 		}

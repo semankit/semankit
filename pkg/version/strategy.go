@@ -1,12 +1,12 @@
 package version
 
 import (
-	"github.com/semankit/semankit/pkg/git"
+	"github.com/semankit/semankit/pkg/commit"
 )
 
 type Strategy interface {
 	Next() string
 	SetCurrentVersion(version string) error
 	InitVersion()
-	UpdateVersion(commitType git.CommitType)
+	UpdateVersion(commitType commit.Type)
 }

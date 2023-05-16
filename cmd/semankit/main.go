@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/charmbracelet/log"
-	gitClient "github.com/semankit/semankit/internal/git"
+	"github.com/semankit/karmic"
 	"github.com/semankit/semankit/internal/rc"
 	"github.com/semankit/semankit/internal/versioning"
 	"github.com/semankit/semankit/internal/versioning/strategy"
@@ -13,7 +13,7 @@ import (
 func main() {
 	var err error
 
-	git := gitClient.New(nil)
+	git := karmic.New(nil)
 	// Guard to check if git is installed
 	if isGitInstalled, err := git.IsInstalled(); err != nil || !isGitInstalled {
 		if err != nil {
@@ -32,14 +32,14 @@ func main() {
 	}
 
 	currentBranch := git.CurrentBranch()
-	if branchCfn := rules.FindConfOfBranch(currentBranch); branchCfn == nil {
+	if branchCfn := rules.FindConfOfBranch(string(currentBranch)); branchCfn == nil {
 		log.Info(fmt.Sprintf("no conf found for %s, skipping current execution", currentBranch))
 		os.Exit(0)
 	} else {
 		var nextVersion string
 		version := versioning.New()
-		tags := git.ListTags()
-		commits := git.ListCommits(0)
+		tags := git.Tags()
+		commits := git.List(0)
 
 		log.Info(fmt.Sprintf("found %d tag(s)", len(tags)))
 
@@ -50,7 +50,7 @@ func main() {
 
 		if len(tags) > 0 {
 			log.Info(fmt.Sprintf("last tag found is %s", tags[0]))
-			commits = git.ListCommitsFromTag(tags[0])
+			commits = tags[0].Commits()
 			log.Info(fmt.Sprintf("found %d new commit(s) since last release", len(commits)))
 			nextVersion, _ = version.Bump(&tags[0], commits, strategy.Default())
 		}

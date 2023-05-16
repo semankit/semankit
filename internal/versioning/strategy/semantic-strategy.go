@@ -3,7 +3,7 @@ package strategy
 import (
 	"errors"
 	"fmt"
-	"github.com/semankit/semankit/pkg/git"
+	"github.com/semankit/semankit/pkg/commit"
 	"strconv"
 	"strings"
 	"unicode"
@@ -53,36 +53,36 @@ func (s *Semantic) SetCurrentVersion(tag string) error {
 	return nil
 }
 
-func (s *Semantic) hasReachCap(commitType git.CommitType) bool {
+func (s *Semantic) hasReachCap(commitType commit.Type) bool {
 	capLimit := 255
 	switch commitType {
-	case git.Minor:
+	case commit.Minor:
 		return s.minor < capLimit
-	case git.Patch:
+	case commit.Patch:
 		return s.patch < capLimit
 	}
 
 	return false
 }
 
-func (s *Semantic) UpdateVersion(commitType git.CommitType) {
+func (s *Semantic) UpdateVersion(commitType commit.Type) {
 	switch commitType {
-	case git.Major:
+	case commit.Major:
 		{
 			s.major++
 		}
-	case git.Minor:
+	case commit.Minor:
 		{
-			if s.hasReachCap(git.Minor) {
+			if s.hasReachCap(commit.Minor) {
 				s.minor++
 			} else {
 				s.minor = 0
 				s.patch++
 			}
 		}
-	case git.Patch:
+	case commit.Patch:
 		{
-			if s.hasReachCap(git.Patch) {
+			if s.hasReachCap(commit.Patch) {
 				s.patch++
 			} else {
 				s.patch = 0
