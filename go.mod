@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/charmbracelet/log v0.2.1
+	github.com/semankit/karmic v0.0.0-20230515103815-199f7d9c45fa
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -17,6 +18,5 @@ require (
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/termenv v0.15.1 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
-	github.com/semankit/karmic v0.0.0-20230515103815-199f7d9c45fa // indirect
 	golang.org/x/sys v0.6.0 // indirect
 )
